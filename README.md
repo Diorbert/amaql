@@ -14,18 +14,23 @@ Also, you might want to perform a simple model query to retrieve all nodes with 
 
 > ?('LABEL':TYPE)
 
+
+> :bulb: For the sake of simplicity and consistency, the examples presented in this documentation will reference to the following metamodel.
+
+!["Example metamodel"](./docs/images/metamodel.png)
+
 A basic pair of examples are presented below. The first illustrates how to get all nodes with a given name. The second shows how to get all nodes of a specific type:
 
-> ?('Customer')
+`?('Slack')`
 
-> ?(Actor)
+`?(Resource)`
 
-The philosophy of an AMAQL query is the "analysis by example", i.e., AMAQL expects from the user a pattern example to match through the model. For example, if you want to discover which Actors use a specific
-Process then you might use the following construction:
+The philosophy of an AMAQL query is the "analysis by example", i.e., AMAQL expects from the user a pattern example to match through the model. For example, if you want to discover which Team Member builds a specific
+Product then you might use the following construction:
 
-> ?('business_process_name':Process)<-[Uses]-(Actor)
+`?('product_name':Product)<-[builds]-(TeamMember)`
 
-The result of this query is a list of "BusinessActors" and "BusinessProcesses" that match the described pattern.
+The result of this query is a list of "Products" and "TeamMembers" that match the described pattern.
 
 ## 1. Nodes
 
@@ -37,11 +42,11 @@ Nodes that contain identifier information about the node. An AMAQL query, in gen
 
 The syntax is presented below:
 
-> ([SEARCH_TEXT]:[DOMAIN_TYPE])
+`([SEARCH_TEXT]:[DOMAIN_TYPE])`
 
 Example:
 
-> ?('Customer':Role)
+`?('Jake':Leader)`
 
 ### 1.2. Typed Node
 
@@ -53,7 +58,7 @@ The syntax is presented below:
 
 Example:
 
-> ?(Component)
+`?(Resource)`
 
 ### 1.3. Group Node
 
@@ -61,7 +66,7 @@ Describes a generic node that captures all nodes of all types. This node is pres
 
 The syntax is presented below:
 
-> ?(*)
+`?(*)`
 
 ### 1.4. Non-Described Node
 
@@ -69,7 +74,7 @@ Describes a generic node that doesn't have to be returned to the query result.
 
 The syntax is presented below:
 
-> ?()
+`?()`
 
 ### 1.5. Identified Node
 
@@ -77,7 +82,7 @@ Describes a node with a search term attached to it and without type assignment.
 
 The syntax is presented below:
 
-> ?('mongodb')
+`?('john')`
 
 ## 2. Relationships
 
@@ -107,7 +112,7 @@ This kind of relationship doesn't have a type associated. It's the simplest way 
 
 Bonded Short Relationships:
 
-> -> | <-
+`-> | <-`
 
 ### 2.4. Described Relationship
 
@@ -121,26 +126,26 @@ The syntax of Described Relationships is presented below:
 
 Where:
 
-SOURCE_DIRECTION: <- | - | <= | =
+SOURCE_DIRECTION: `<- | - | <= | =`
 
-TARGET_DIRECTION: -> | - | => | =
+TARGET_DIRECTION: `-> | - | => | =`
 
 RELATIONSHIP_TYPE: Domain relationship types
 
 Examples:
 
-> ?('ERP':Component)<=[Uses]=(Actor)-[Access]->(Data)
+`?('car':Resource)=[requiredBy]=>(TeamMember)-[builds]->(Product)`
 
-> ?('Customer':Role)=[Assignment]=>(Process)
+`?('ana':TeamMember)<=[supervises]=(Leader)`
 
 ## 3. Constraints
 
 The purpose of AMAQL queries is to provide a suitable platform for complex analysis. To achieve this goal, AMAQL has some constraints to guarantee a predictable performance. The following situations are not allowed.
 
-| Constraint                               | Example                     |
-|:-----------------------------------------|:----------------------------|
-| Starting a query with Inclusive Node     | ?(*)<=[serving]=(component) |
-| Starting a query with Non-Described Node | ?()<=[realization]=(node)   |
-| Query with Solitary Inclusive Node       | ?(*)                        |
-| Query with Solitary Non-Described Node   | ?()                         |
+| Constraint                               | Example                        |
+|:-----------------------------------------|:-------------------------------|
+| Starting a query with Inclusive Node     | `?(*)<=[supervises]=(Leader)`  |
+| Starting a query with Non-Described Node | `?()<=[requiredBy]=(Resource)` |
+| Query with Solitary Inclusive Node       | `?(*)`                         |
+| Query with Solitary Non-Described Node   | `?()`                          |
 
