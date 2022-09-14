@@ -149,3 +149,6 @@ The purpose of AMAQL queries is to provide a suitable platform for complex analy
 | Query with Solitary Inclusive Node       | `?(*)`                         |
 | Query with Solitary Non-Described Node   | `?()`                          |
 
+## 4. AMAQL Execution
+
+You can find a Pattern Analysis Engine that uses AMAQL as a query language [here](https://github.com/Peritoz/pattern-analysis-engine).
